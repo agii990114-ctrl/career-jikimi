@@ -10,19 +10,19 @@
 </tbody>
 </table>
 
-#### 주제 (Topic)
+### 주제 (Topic)
 
 * 한국어 사내 업무용 채팅을 위한 **전송 전 메시지 오발송 감지기**입니다. 사용자가 전송 버튼을 누르면, 해당 채팅방의 최근 대화 내역과 입력한 메시지가 미세조정된 한국어 Cross-Encoder 모델로 전달되어 "이 채팅방에 어울리지 않을 확률"을 반환합니다.
 
 * 확률이 임계치를 넘으면 메시지가 저장·전송되기 전 확인 팝업창을 띄웁니다. 데이터 누수가 통제된 데이터셋, 미세조정 분류기, 평가 프로토콜, 교체 가능한 판정 백엔드 등 **판정 능력 그 자체**가 핵심 성과물이며, 실시간 채팅 앱은 기능 시연을 위해 가볍게 구현되었습니다.
 
-#### 기획 의도 (Planning Intent)
+### 기획 의도 (Planning Intent)
 
 * 한 번 읽힌 잘못 보낸 메시지는 회수할 수 없으므로 전송 단계에서 미리 차단하도록 설계했습니다. 개발 직전 팀원이 6명에서 2명으로 줄어듦에 따라, 기존 VLM/이미지 감지 범위를 축소하고 "텍스트 기반의 맥락 중심 오발송 감지"로 문제를 재정의하여 6일 안에 완성할 수 있도록 조정했습니다. 정상적인 메시지에 팝업이 뜨면 서비스 사용성이 크게 저하되므로, 정밀도(Precision) 최우선 정책(오탐 0건)을 최우선 목표로 최적화했습니다.
 
 * 실제 운영 중에는 차단된 메시지만 피드백이 들어오므로 재현율(Recall)은 측정이 불가능한 것으로 명시하고 오발송 신고 버튼을 별도 제공했습니다. 욕설/개인정보 필터링은 범위에서 제외하여 오직 오발송 감지 성능만 정밀 측정하도록 유지했습니다.
 
-#### 아키텍처 (Architecture)
+### 아키텍처 (Architecture)
 
 ```mermaid
 flowchart LR
@@ -34,7 +34,7 @@ flowchart LR
     REG -- "WS /ws · 사용자당 1연결<br/>room_id 멀티플렉싱 브로드캐스트" --> B
 ```
 
-#### 주요 작업 및 성과 (Key Work & Outcomes)
+### 주요 작업 및 성과 (Key Work & Outcomes)
 
 | 항목 | 내용 |
 |---|---|
@@ -44,7 +44,7 @@ flowchart LR
 | **평가 결과** | 평가 데이터셋 기준 **AUC 1.000, Precision 1.000, 오탐(False Positive) 0건** 달성, CPU 환경 평균 응답 속도(p50) 512ms 기록. 대화 내역을 타 대화방 내용으로 교체하는 절제 연구(Ablation) 시 AUC가 0.638로 하락하여 맥락 의존성 입증. OOF 정확도 0.854로 규칙 기반 Baseline(0.725) 대비 우수. |
 | **판정 백엔드 & 데모 앱** | 3가지 판정 백엔드 연동, CLI 기반 오프라인 평가 도구 제공, FastAPI + MariaDB + React 데모 앱 구축, 8개 ADR 작성, pytest 355개 / Vitest 147개 테스트 통과, CPU 전용 PyTorch 활용 3단계 Docker 빌드 적용. |
 
-#### 기술 스택 (Tech Stack)
+### 기술 스택 (Tech Stack)
 
 | 분류 | 기술 |
 |---|---|
@@ -53,7 +53,7 @@ flowchart LR
 | **Frontend** | React 18, TypeScript 5.7, Zustand 5, Vite 6, Vitest |
 | **Infra / QA** | Docker, Docker Compose, nginx, multi-stage Dockerfile, pytest, ruff, pip-audit, AI-DLC 워크플로우 |
 
-#### 트러블슈팅 (Troubleshooting)
+### 트러블슈팅 (Troubleshooting)
 
 - **배포 환경 임계치(Threshold) 0.99 오적용 문제**<br>
   설정 파일 우선순위에 의해 학습 시 생성된 `threshold.json`의 0.99 값이 적용되어 감지 알림이 거의 뜨지 않던 오류 발견. 환경 변수(env) 값을 최우선 적용하도록 수정하고 서버 시작 시 적용된 설정을 로그로 출력하도록 개선.
