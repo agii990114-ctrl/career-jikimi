@@ -1,4 +1,4 @@
-### 3. Career-Jikimi — 사내 채팅 메시지 오발송 방지 AI 가드
+# Career-Jikimi — 사내 채팅 메시지 오발송 방지 AI 가드
 
 <table align="center">
 <thead><tr><th>항목</th><th>내용</th></tr></thead>
